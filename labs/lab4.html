@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>repl.it</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <style>
+          canvas {background-color:  #001E62;z-index:27;}
+        </style>
+        
+        
+    </head>
+    <body>
+      <canvas id="canvas1" width="500" height="300"></canvas>
+      <div id="divX"></div>
+      
+      <script>
+        var canvas = document.getElementById("canvas1");
+        var ctx = canvas.getContext("2d");
+        
+        var divX = document.getElementById("divX");  // to show the circleX val
+        
+        var circleX = 500;
+        var circleY = 300;
+        
+        ctx.fillStyle = "#D50032";
+        
+        
+        //==========
+        //============
+        
+        
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);    // clear the canvas
+          //circleX = 250;                                     // increment the x position
+          divX.innerText = "circleX = " + circleX;          // show the circleX value
+          //ctx.beginPath();                                  // clear old path points
+          ctx.arc(circleX/2,circleY/2,100,0, Math.PI *2);            // set points for an arc
+          ctxfillStyle = "#D50032";
+          ctx.stroke();// fill the arc
+          ctx.fill();
+          requestAnimationFrame(draw);                      // call method again at next frame (FPS=60)
+       }
+       requestAnimationFrame(draw);
+        $(function() {
+          $("canvas").on("click", function(e) {
+            console.log(e);
+          })
+        })
+        
+        
+      </script>
+    </body>
+</html>

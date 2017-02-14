@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      
+      function getData2 () {
+        
+        // using aggregation url from class
+        var url = "https://data.cityofchicago.org/resource/787j-mys9.json?$query=SELECT%20community_area,%20count(community_area)%20WHERE%20status=%27Open%27%20GROUP%20BY%20community_area%20ORDER%20BY%20count(community_area)";
+        
+        $.ajax({
+            url: url,
+            method: 'GET',
+          }).done(function(data) {
+            console.log(data);
+            drawTable(data);
+          });     
+      }
+      
+      google.charts.load('current', {'packages':['table']});
+      
+      google.charts.setOnLoadCallback(getData2);
+
+      function drawTable(apiData2) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Community Area');
+        data.addColumn('number', 'Pothole Count');
+        
+        $.each(apiData2, function(i,v) {
+          data.addRow([v.community_area, parseInt(v.count_community_area)]);
+        });
+        
+        var table = new google.visualization.Table(document.getElementById('table_div'));
+
+        table.draw(data,{left:200, top:0, width: '20%', height: '50%'});
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Data For Open Pothole Requests In Chicago By Community Area</h1>
+    <h2>Represented By Table</h2>
+    <div id="table_div"></div>
+  </body>
+</html>
