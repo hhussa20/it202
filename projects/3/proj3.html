@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>repl.it</title>
+        <style>
+          #canvas1 {
+            border: solid 2px black;
+          }
+        </style>
+    </head>
+    <body>
+      <canvas id="canvas1" width="500" height="300"></canvas>
+      <div id="divX"></div>
+      
+      <script>
+        var canvas = document.getElementById("canvas1");
+        var ctx = canvas.getContext("2d");
+        
+        var divX = document.getElementById("divX");  // to show the circleX val
+        
+        
+        var circleX = 600;
+        
+        function drawCircle() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);    // clear the canvas
+          circleX -= 1;                                     // increment the x position
+          divX.innerText = "circleX = " + circleX;          // show the circleX value
+          ctx.beginPath();                                  // clear old path points
+          ctx.arc(circleX, 60,30,0, Math.PI *2);            // set points for an arc
+          ctx.closePath();
+          ctx.fillStyle = "rgba(255,0,0,1)";
+          ctx.fill();                                       // fill the arc
+          ctx.stroke();
+          requestAnimationFrame(drawCircle);                // call method again at next frame (FPS=60)
+      }
+        
+        requestAnimationFrame(drawCircle);
+            
+        window.addEventListener("keydown",keysPressed, false);
+        window.addEventListener("keyup",keysReleased, false);
+        
+        var keys = [];
+        
+        var deltaX = 0;
+        var deltaY = 0;
+        
+        function keysPressed(e){
+            keys[e.keyCode] = true;
+            
+            if (keys[37]){  
+                deltaX -= 2;
+            }
+                    
+            if (keys[38]){  
+                deltaY -= 2;
+            }
+            
+            if (keys[39]){  
+                deltaX += 2;
+            }
+            
+            if (keys[40]){  
+                deltaY += 2;
+            }
+            
+            e.preventDefault();
+            drawTriangle();
+        }
+        
+        function keysReleased(e){
+            keys[e.keyCode] = false;
+        }
+        
+        function drawTriangle(){
+            ctx.beginPath();
+            ctx.moveTo(200 + deltaX, 100 + deltaY);
+            ctx.lineTo(170 + deltaX, 150 + deltaY);
+            ctx.lineTo(230 + deltaX, 150 + deltaY);
+            ctx.closePath();
+            ctx.fillStyle = "rgba(0,0,0,1)";
+            ctx.fill();
+            requestAnimationFrame(drawTriangle);
+        }
+        requestAnimationFrame(drawTriangle);
+       
+        
+      </script>
+    </body>
+</html>
