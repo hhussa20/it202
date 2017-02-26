@@ -11,54 +11,108 @@
         </style>
     </head>
     <body>
+        
       <canvas id="canvas1" width="500" height="300"></canvas>
       <div id="divX"></div>
       
       <script>
+        
         var canvas = document.getElementById("canvas1");
         var ctx = canvas.getContext("2d");
         
-        var divX = document.getElementById("divX");  // to show the circleX val
+        var player = {x:20,y:120,width:60,height:60,lives:3};
+        var rect1 = {x:550,y:15,width:60,height:60};
+        var rect2 = {x:600,y:160,width:60,height:60};
+        var rect3 = {x:650,y:80,width:60,height:60};
+        var rect4 = {x:800,y:230,width:60,height:60};
         
-        
-        var circleX = 600;
-        
-        function drawCircle() {
+        function draw() {
+         
           ctx.clearRect(0,0,canvas.width,canvas.height);    // clear the canvas
-          circleX -= 1;                                     // increment the x position
-          divX.innerText = "circleX = " + circleX;          // show the circleX value
-          ctx.beginPath();                                  // clear old path points
-          ctx.arc(circleX, 60,30,0, Math.PI *2);            // set points for an arc
+          rect1.x -= 1;                                  // decrement the x positions
+          rect2.x -= 1;
+          rect3.x -= 1;
+          rect4.x -= 1;
+          
+          //player
+          ctx.beginPath();
+          ctx.rect(player.x, player.y + deltaY,player.width,player.height);
           ctx.closePath();
+          ctx.fillStyle = "rgba(0,0,0,1)";
+          ctx.fill();
+          
+          //rectangle 1
+          ctx.beginPath();                                  // clear old path points
+          ctx.rect(rect1.x,rect1.y,rect1.width,rect1.height);                   // set points for an arc
           ctx.fillStyle = "rgba(255,0,0,1)";
           ctx.fill();                                       // fill the arc
           ctx.stroke();
-          requestAnimationFrame(drawCircle);                // call method again at next frame (FPS=60)
-      }
-        
-        requestAnimationFrame(drawCircle);
+          ctx.closePath();
+          
+          //rectangle 2
+          ctx.beginPath();
+          ctx.rect(rect2.x,rect2.y,rect2.width,rect2.height);
+          ctx.fillStyle = "rgba(255,0,0,1)";
+          ctx.fill();                                       // fill the arc
+          ctx.stroke();
+          ctx.closePath();
+          
+          //rectangle 3
+          ctx.beginPath();
+          ctx.rect(rect3.x,rect3.y,rect3.width,rect3.height);
+          ctx.fillStyle = "rgba(255,0,0,1)";
+          ctx.fill();                                       // fill the arc
+          ctx.stroke();
+          ctx.closePath();
+          
+          //rectangle 4
+          ctx.beginPath();
+          ctx.rect(rect4.x,rect4.y,rect4.width,rect4.height);
+          ctx.fillStyle = "rgba(255,0,0,1)";
+          ctx.fill();                                       // fill the arc
+          ctx.stroke();
+          ctx.closePath();
+          
+          requestAnimationFrame(draw); 
+          
+          //Attempt to test collision
+          // if (rect1.y + rect1.height <= player.y + player.height) {
+          //       //collision detected
+          //       ctx.clearRect(0,0,canvas.width,canvas.height); //clear canvas
+          // }
+          // else{
+          // }
+          
+          if (rect1.x === -50){
+                rect1.x = 550;
+          }
+          if (rect2.x === -50){
+                rect2.x = 600;
+          }
+          if (rect3.x === -50){
+                rect3.x = 650;
+          }
+          if (rect4.x === -50){
+                rect4.x = 800;
+          }
             
+        }
+        
+        requestAnimationFrame(draw);
+        
+        
         window.addEventListener("keydown",keysPressed, false);
         window.addEventListener("keyup",keysReleased, false);
         
         var keys = [];
         
-        var deltaX = 0;
         var deltaY = 0;
         
         function keysPressed(e){
             keys[e.keyCode] = true;
-            
-            if (keys[37]){  
-                deltaX -= 2;
-            }
                     
             if (keys[38]){  
                 deltaY -= 2;
-            }
-            
-            if (keys[39]){  
-                deltaX += 2;
             }
             
             if (keys[40]){  
@@ -66,26 +120,18 @@
             }
             
             e.preventDefault();
-            drawTriangle();
+           
         }
         
         function keysReleased(e){
             keys[e.keyCode] = false;
         }
         
-        function drawTriangle(){
-            ctx.beginPath();
-            ctx.moveTo(200 + deltaX, 100 + deltaY);
-            ctx.lineTo(170 + deltaX, 150 + deltaY);
-            ctx.lineTo(230 + deltaX, 150 + deltaY);
-            ctx.closePath();
-            ctx.fillStyle = "rgba(0,0,0,1)";
-            ctx.fill();
-            requestAnimationFrame(drawTriangle);
-        }
-        requestAnimationFrame(drawTriangle);
-       
-        
       </script>
+        <button id="play">Play</button>
+        <button id="pause">Pause</button>
+        <p>Move the black square by using the up and down arrow keys.</p>
+        <p>Try not to touch the red squares!</p>
+
     </body>
 </html>
