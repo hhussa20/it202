@@ -1,0 +1,148 @@
+<html>
+  <head>
+    <!-- Material Design Lite -->
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <!-- Material Design icon font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  </head>
+  <body>
+    <!-- Simple header with fixed tabs. -->
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+                mdl-layout--fixed-tabs">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title">Title</span>
+        </div>
+        <!-- Tabs -->
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+          <a href="#fixed-tab-1" class="mdl-layout__tab is-active">Tab 1</a>
+          <a href="#fixed-tab-2" class="mdl-layout__tab">Tab 2</a>
+          <a href="#fixed-tab-3" class="mdl-layout__tab">Tab 3</a>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Options</span>
+      </div>
+      <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+          <div class="page-content">
+            
+            <form action="#">
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="store">
+                <label class="mdl-textfield__label" for="store">Store</label>
+              </div>
+            
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="category">
+                <label class="mdl-textfield__label" for="category">Category</label>
+              </div>
+            
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="name">
+                <label class="mdl-textfield__label" for="name">Name</label>
+              </div>
+              
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="quantity">
+                <label class="mdl-textfield__label" for="sample2">Number...</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
+              </div>
+              <button id="btnAdd" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                Button
+              </button>
+            </form>
+            
+            <h2> Shop List</h2>
+            <div id="list">
+              
+            </div>
+            <!-- Expandable Textfield -->
+            <form action="#">
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="sample6">
+                  <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                  <input class="mdl-textfield__input" type="text" id="sample6">
+                  <label class="mdl-textfield__label" for="sample-expandable">Expandable Input</label>
+                </div>
+              </div>
+            </form>
+        </section>
+        <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+          <div class="page-content">
+            <!-- Your content goes here --></div>
+            
+        </section>
+        <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+          <div class="page-content"><!-- Your content goes here --></div>
+        </section>
+      </main>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+    <script>
+          //
+          // Define your database
+          //
+          var db = new Dexie("shopDB");
+          db.version(1).stores({
+              list: '++id,store,category,name,price,quantity'
+          });
+          
+          db.list
+      		.each (function (item) {
+      		  var html = item.store
+      		            +"<br>"
+      		            +item.category
+      		            +"<br>"
+      		            +item.name
+      		            +"<br>"
+      		            +item.quantity
+      		            +"<br>"
+      		            +item.price
+      		            +"<br>"
+      		            +(item.quantity * item.price)
+      		            +"<hr>";
+      		        $("#list").append(html);
+      		});
+      		
+      		$("#btnAdd").on("click", function(){
+        		db.list.add({
+          		store: $("#store").val(),
+          		category: $("#category").val(),
+          		name: $("#name").val(),
+          		price: $("#price").val(),
+          		quantity: $("#quantity").val()
+        		});
+      		});
+      		
+      		$("#btnSearch").on("click", function(){
+      		db.list
+      		.where('name')
+      		.each (function (item) {
+      			//console.log (item.name);
+      			var html = item.store
+      		            +"<br>"
+      		            +item.category
+      		            +"<br>"
+      		            +item.name
+      		            +"<br>"
+      		            +item.quantity
+      		            +"<br>"
+      		            +item.price
+      		            +"<br>"
+      		            +(item.quantity * item.price)
+      		            +"<hr>";
+      		        $("#list").append(html);
+      		});
+      		});
+          
+          
+    </script>
+  </body>
+</html>
