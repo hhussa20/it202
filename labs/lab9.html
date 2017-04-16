@@ -72,6 +72,7 @@
                 </div>
               </div>
             </form>
+          </div>
         </section>
         <section class="mdl-layout__tab-panel" id="fixed-tab-2">
           <div class="page-content">
@@ -93,6 +94,11 @@
           db.version(1).stores({
               list: '++id,store,category,name,price,quantity'
           });
+          
+          // Open the database
+        	db.open().catch(function(error) {
+        		alert('Uh oh : ' + error);
+        	});
           
           db.list
       		.each (function (item) {
